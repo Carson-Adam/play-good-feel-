@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Golf Ball Store</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 15px;
+  }
+  h1 {
+    text-align: center;
+  }
+  .product {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  .product img {
+    width: 120px;
+    border-radius: 10px;
+  }
+  .product-details {
+    flex-grow: 1;
+  }
+  label {
+    margin-right: 10px;
+  }
+  button {
+    background-color: #0070ba;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  button:hover {
+    background-color: #005ea6;
+  }
+  .cart-link {
+    display: block;
+    text-align: right;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #0070ba;
+  }
+</style>
+</head>
+<body>
+<h1>Golf Ball Store</h1>
+<a href="cart.html" class="cart-link">View Cart</a>
+
+<div class="product" data-name="Titleist">
+  <img src="https://cdn.pixabay.com/photo/2014/12/21/23/56/golf-ball-575452_1280.jpg" alt="Titleist Golf Balls" />
+  <div class="product-details">
+    <h2>Titleist</h2>
+    <p>Choose quantity:</p>
+    <label><input type="radio" name="titleist-qty" value="12" checked /> 12-pack - $18</label><br />
+    <label><input type="radio" name="titleist-qty" value="24" /> 24-pack - $33</label><br /><br />
+    <button onclick="addToCart('Titleist')">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product" data-name="TaylorMade">
+  <img src="https://cdn.pixabay.com/photo/2016/12/21/11/19/golf-1927498_1280.jpg" alt="TaylorMade Golf Balls" />
+  <div class="product-details">
+    <h2>TaylorMade</h2>
+    <p>Choose quantity:</p>
+    <label><input type="radio" name="taylormade-qty" value="12" checked /> 12-pack - $18</label><br />
+    <label><input type="radio" name="taylormade-qty" value="24" /> 24-pack - $33</label><br /><br />
+    <button onclick="addToCart('TaylorMade')">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product" data-name="Callaway">
+  <img src="https://cdn.pixabay.com/photo/2017/07/03/12/15/golf-2461153_1280.jpg" alt="Callaway Golf Balls" />
+  <div class="product-details">
+    <h2>Callaway</h2>
+    <p>Choose quantity:</p>
+    <label><input type="radio" name="callaway-qty" value="12" checked /> 12-pack - $18</label><br />
+    <label><input type="radio" name="callaway-qty" value="24" /> 24-pack - $33</label><br /><br />
+    <button onclick="addToCart('Callaway')">Add to Cart</button>
+  </div>
+</div>
+
+<div class="product" data-name="Titleist Pro V1">
+  <img src="https://cdn.pixabay.com/photo/2014/12/21/23/56/golf-ball-575452_1280.jpg" alt="Titleist Pro V1 Golf Balls" />
+  <div class="product-details">
+    <h2>Titleist Pro V1</h2>
+    <p>Choose quantity:</p>
+    <label><input type="radio" name="pro-v1-qty" value="12" checked /> 12-pack - $27</label><br />
+    <label><input type="radio" name="pro-v1-qty" value="24" /> 24-pack - $52</label><br /><br />
+    <button onclick="addToCart('Titleist Pro V1')">Add to Cart</button>
+  </div>
+</div>
+
+<script>
+  const prices = {
+    'Titleist': { 12: 18, 24: 33 },
+    'TaylorMade': { 12: 18, 24: 33 },
+    'Callaway': { 12: 18, 24: 33 },
+    'Titleist Pro V1': { 12: 27, 24: 52 }
+  };
+
+  function addToCart(productName) {
+    let qtyRadioName = '';
+    switch(productName) {
+      case 'Titleist': qtyRadioName = 'titleist-qty'; break;
+      case 'TaylorMade': qtyRadioName = 'taylormade-qty'; break;
+      case 'Callaway': qtyRadioName = 'callaway-qty'; break;
+      case 'Titleist Pro V1': qtyRadioName = 'pro-v1-qty'; break;
+    }
+
+    const qtyRadios = document.getElementsByName(qtyRadioName);
+    let selectedQty = 12; // default
+    for (const radio of qtyRadios) {
+      if (radio.checked) {
+        selectedQty = parseInt(radio.value);
+        break;
+      }
+    }
+
+    const price = prices[productName][selectedQty];
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Check if same product & qty already in cart, increment count if yes
+    const existingIndex = cart.findIndex(item => item.name === productName && item.qty === selectedQty);
+    if (existingIndex >= 0) {
+      cart[existingIndex].count += 1;
+    } else {
+      cart.push({ name: productName, qty: selectedQty, price: price, count: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${productName} (${selectedQty}-pack) added to cart!`);
+  }
+</script>
+</body>
+</html>
