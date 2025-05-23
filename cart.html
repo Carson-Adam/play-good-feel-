@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your Cart - Golf Ball Store</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 15px;
+  }
+  h1 {
+    text-align: center;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  th {
+    background-color: #f0f0f0;
+  }
+  button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  button:hover {
+    background-color: #c9302c;
+  }
+  .empty-msg {
+    text-align: center;
+    font-style: italic;
+    margin: 40px 0;
+  }
+  .checkout-link {
+    display: block;
+    text-align: right;
+    margin-top: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #0070ba;
+    font-size: 1.2rem;
+  }
+  .back-link {
+    display: block;
+    margin-bottom: 20px;
+    color: #0070ba;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+<h1>Your Cart</h1>
+<a href="index.html" class="back-link">&larr; Continue Shopping</a>
+
+<table id="cart-table" style="display:none;">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Pack Size</th>
+      <th>Price per pack</th>
+      <th>Quantity</th>
+      <th>Subtotal</th>
+      <th>Remove</th>
+    </tr>
+  </thead>
+  <tbody id="cart-body"></tbody>
+  <tfoot>
+    <tr>
+      <th colspan="4" style="text-align:right;">Total:</th>
+      <th id="cart-total">$0.00</th>
+      <th></th>
+    </tr>
+  </tfoot>
+</table>
+
+<p class="empty-msg" id="empty-msg">Your cart is empty.</p>
+
+<a href="checkout.html" id="checkout-link" class="checkout-link" style="display:none;">Proceed to Checkout &rarr;</a>
+
+<script>
+  function renderCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const tbody = document.getElementById('cart-body');
+    const totalEl = document.getElementById('cart-total');
